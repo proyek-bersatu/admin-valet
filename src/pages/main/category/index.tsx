@@ -89,18 +89,6 @@ export default function UserPage({ table }: any) {
   }, []);
   const data = [...table].map((item, index) => ({
     ...item,
-    ktp: (
-      <div className="flex gap-2 items-center">
-        <Image src={item.full_path_ktp} alt="ktp" width={50} height={50} />
-        <Link
-          className="text-blue-500"
-          href={item.full_path_ktp}
-          target="_blank"
-        >
-          View
-        </Link>
-      </div>
-    ),
     action: (
       <div key={index} className="flex gap-2">
         <Button
@@ -142,11 +130,11 @@ export default function UserPage({ table }: any) {
   return (
     <div>
       <div className="flex lg:flex-row flex-col gap-2 items-center justify-between">
-        <h1 className="text-2xl font-bold">Pengguna</h1>
+        <h1 className="text-2xl font-bold">Kategori</h1>
       </div>
       <div className="flex lg:flex-row flex-col gap-2 items-center justify-between mt-4">
         <Input
-          placeholder="Cari Lokasi"
+          placeholder="Cari Kategori"
           type="search"
           onChange={(e) => setFilter({ search: e.target.value })}
         />
@@ -156,7 +144,7 @@ export default function UserPage({ table }: any) {
           type="button"
           onClick={() => setModal({ open: true, key: "create" })}
         >
-          + Tambah Pengguna
+          + Tambah Kategori
         </Button>
       </div>
       <div className="w-full overflow-x-auto">

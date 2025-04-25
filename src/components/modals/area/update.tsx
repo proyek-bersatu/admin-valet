@@ -12,9 +12,10 @@ import Swal from "sweetalert2";
 interface Props {
   open: boolean;
   setOpen: any;
+  data: any;
 }
 
-export default function UserCreateModal({ open, setOpen }: Props) {
+export default function AreaUpdateModal({ open, setOpen, data }: Props) {
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
   const params = queryToUrlSearchParams(router?.query)?.toString();
@@ -27,10 +28,10 @@ export default function UserCreateModal({ open, setOpen }: Props) {
       const payload = {
         ...formData,
       };
-      await axios.post("/api/office/administrator", payload);
+      await axios.patch("/api/office/administrator", payload);
       Swal.fire({
         icon: "success",
-        title: "User Created Successfully",
+        title: "Area Updated Successfully",
         showConfirmButton: false,
         timer: 1500,
       });
@@ -41,7 +42,7 @@ export default function UserCreateModal({ open, setOpen }: Props) {
       console.log(error);
       Swal.fire({
         icon: "error",
-        title: error?.response?.data?.message?.message || "Error creating user",
+        title: error?.response?.data?.message?.message || "Error updating area",
       });
       if (error?.response?.data?.message?.code === 401) {
         router.push("/");
@@ -56,66 +57,45 @@ export default function UserCreateModal({ open, setOpen }: Props) {
       <Modal open={open} setOpen={setOpen}>
         <div className="border-b-2 border-gray-200 pb-4 flex justify-between gap-2">
           <h1 className="text-center font-bold text-xl text-orange-500">
-            Tambah Data Pengguna
+            Ubah Data Lokasi
           </h1>
           <button type="button" onClick={setOpen}>
             <XIcon className="w-6 h-6 text-orange-500" />
           </button>
         </div>
         <form className="mt-4 flex flex-col gap-2" onSubmit={onSubmit}>
+          <input type="hidden" name="id" value={data.id} />
           <Input
             label="Nama"
             required={true}
             placeholder="Masukkan Nama"
             name="name"
+            defaultValue={data.name}
           />
           <Input
-            label="Username"
+            label="Latitude"
             required={true}
-            placeholder="Masukkan Username"
-            name="username"
+            placeholder="Masukkan Latitude"
+            name="lat"
+            defaultValue={data.lat}
           />
           <Input
-            label="Email"
+            label="Longitude"
             required={true}
-            placeholder="Masukkan Email"
-            name="email"
-            type="email"
-          />
-          <Input
-            label="Password"
-            required={true}
-            placeholder="Masukkan Password"
-            name="password"
-            type="password"
-          />
-          <Input
-            label="No Telepon"
-            required={true}
-            placeholder="Masukkan No Telepon"
-            name="phone"
-            type="number"
+            placeholder="Masukkan Longitude"
+            name="long"
+            defaultValue={data.long}
           />
           <Select
             options={[
-              { value: "1", label: "All" },
-              { value: "2", label: "Cipadung" },
-              { value: "3", label: "Dipatiukur" },
+              { value: "ACTIVE", label: "Aktif" },
+              { value: "INACTIVE", label: "Non Aktif" },
             ]}
-            label="Lokasi"
+            label="Status"
             required={true}
-            placeholder="Pilih Lokasi"
-            name="area_id"
-          />
-          <Select
-            options={[
-              { value: "Finance", label: "Admin Keuangan" },
-              { value: "Cashier", label: "Kasir" },
-            ]}
-            label="Peran"
-            required={true}
-            placeholder="Pilih Peran"
-            name="role"
+            placeholder="Pilih Status"
+            name="status"
+            defaultValue={data.status}
           />
           <div className="w-full flex justify-end gap-2 border-t-2 border-t-gray-200 pt-4 mt-2">
             <Button

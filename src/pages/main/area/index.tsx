@@ -1,11 +1,11 @@
 import Button from "@/components/Button";
 import Input from "@/components/Input";
 import { useModal } from "@/components/Modal";
-import UserCreateModal from "@/components/modals/user/create";
-import UserDeleteModal from "@/components/modals/user/delete";
-import UserUpdateModal from "@/components/modals/user/update";
+import AreaCreateModal from "@/components/modals/area/create";
+import AreaDeleteModal from "@/components/modals/area/delete";
+import AreaUpdateModal from "@/components/modals/area/update";
 import { CONFIG } from "@/config";
-import { ColumnUser } from "@/constants/column_user";
+import { ColumnArea } from "@/constants/column_area";
 import axios from "axios";
 import { parse } from "cookie";
 import { PencilLineIcon, TrashIcon } from "lucide-react";
@@ -89,18 +89,17 @@ export default function UserPage({ table }: any) {
   }, []);
   const data = [...table].map((item, index) => ({
     ...item,
-    ktp: (
-      <div className="flex gap-2 items-center">
-        <Image src={item.full_path_ktp} alt="ktp" width={50} height={50} />
+    location:
+      item?.lat && item?.long ? (
         <Link
-          className="text-blue-500"
-          href={item.full_path_ktp}
+          href={`https://www.google.com/maps/search/?api=1&query=${item?.lat},${item?.long}`}
           target="_blank"
         >
-          View
+          Lihat Lokasi
         </Link>
-      </div>
-    ),
+      ) : (
+        "-"
+      ),
     action: (
       <div key={index} className="flex gap-2">
         <Button
@@ -142,7 +141,7 @@ export default function UserPage({ table }: any) {
   return (
     <div>
       <div className="flex lg:flex-row flex-col gap-2 items-center justify-between">
-        <h1 className="text-2xl font-bold">Pengguna</h1>
+        <h1 className="text-2xl font-bold">Lokasi</h1>
       </div>
       <div className="flex lg:flex-row flex-col gap-2 items-center justify-between mt-4">
         <Input
@@ -156,14 +155,14 @@ export default function UserPage({ table }: any) {
           type="button"
           onClick={() => setModal({ open: true, key: "create" })}
         >
-          + Tambah Pengguna
+          + Tambah Lokasi
         </Button>
       </div>
       <div className="w-full overflow-x-auto">
         {show && (
           <div className="mt-4">
             <DataTable
-              columns={ColumnUser}
+              columns={ColumnArea}
               data={data}
               pagination
               highlightOnHover
@@ -188,17 +187,17 @@ export default function UserPage({ table }: any) {
         )}
       </div>
       {modal?.key == "create" && (
-        <UserCreateModal open={modal?.open} setOpen={setModal} />
+        <AreaCreateModal open={modal?.open} setOpen={setModal} />
       )}
       {modal?.key == "update" && (
-        <UserUpdateModal
+        <AreaUpdateModal
           open={modal?.open}
           setOpen={setModal}
           data={modal?.data}
         />
       )}
       {modal?.key == "delete" && (
-        <UserDeleteModal
+        <AreaDeleteModal
           open={modal?.open}
           setOpen={setModal}
           data={modal?.data}

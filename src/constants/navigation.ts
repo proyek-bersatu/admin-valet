@@ -5,7 +5,7 @@ export const NAVIGATIONS = [
         icon: "dashboard",
     },
     {
-        title: "Area",
+        title: "Lokasi",
         href: "/main/area",
         icon: "area",
     },
@@ -14,11 +14,11 @@ export const NAVIGATIONS = [
         href: "/main/category",
         icon: "category",
     },
-    {
-        title: "Tarif",
-        href: "/main/fee",
-        icon: "fee",
-    },
+    // {
+    //     title: "Tarif",
+    //     href: "/main/fee",
+    //     icon: "fee",
+    // },
     {
         title: "Kasir",
         href: "/main/cashier",
