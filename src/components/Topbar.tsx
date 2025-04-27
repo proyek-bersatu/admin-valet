@@ -26,8 +26,8 @@ export default function Topbar({
   const handleLogout = async (e: any) => {
     e.preventDefault();
     try {
-      await axios.post("/api/office/auth/logout");
-      return router.push(pathname?.includes("office") ? "/office/login" : "/");
+      await axios.post("/api/logout");
+      return router.push(pathname?.includes("bo") ? "/bo/login" : "/");
     } catch (error) {
       console.log(error);
     }

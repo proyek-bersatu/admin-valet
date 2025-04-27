@@ -38,8 +38,13 @@ export const NAVIGATIONS = [
 
 export const OFFICE_NAVIGATIONS = [
     {
-        title: "Administrator",
-        href: "/office/main/administrator",
-        icon: "/icons/graph.svg",
+        title: "Dashboard",
+        href: "/bo/main/dashboard",
+        icon: "dashboard",
+    },
+    {
+        title: "Partner",
+        href: "/bo/main/partner",
+        icon: "partner",
     },
 ]

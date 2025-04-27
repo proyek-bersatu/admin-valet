@@ -66,7 +66,7 @@ export default function AreaDeleteModal({ open, setOpen, data }: Props) {
           width={50}
           height={50}
         /> */}
-        <Trash2Icon className="w-16 h-16 mx-auto" />
+        <Trash2Icon className="w-16 h-16 mx-auto text-red-500" />
         <form onSubmit={onSubmit} className="mt-4 flex flex-col gap-2">
           <input type="hidden" name="id" value={data.id} />
           <input type="hidden" name="data" value={JSON.stringify(data)} />

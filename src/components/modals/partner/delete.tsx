@@ -12,7 +12,7 @@ interface Props {
   setOpen: any;
   data: any;
 }
-export default function UserDeleteModal({ open, setOpen, data }: Props) {
+export default function PartnerDeleteModal({ open, setOpen, data }: Props) {
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
   const params = queryToUrlSearchParams(router?.query)?.toString();
@@ -25,10 +25,10 @@ export default function UserDeleteModal({ open, setOpen, data }: Props) {
       const payload = {
         ...formData,
       };
-      await axios.delete("/api/office/administrator", { data: payload });
+      await axios.delete("/api/bo_partner", { data: payload });
       Swal.fire({
         icon: "success",
-        title: "User Deleted Successfully",
+        title: "Partner Deleted Successfully",
         showConfirmButton: false,
         timer: 1500,
       });
@@ -39,10 +39,11 @@ export default function UserDeleteModal({ open, setOpen, data }: Props) {
       console.log(error, "error");
       Swal.fire({
         icon: "error",
-        title: error?.response?.data?.message?.message || "Error deleting user",
+        title:
+          error?.response?.data?.message?.message || "Error deleting Partner",
       });
       if (error?.response?.data?.message?.code === 401) {
-        router.push("/office/login");
+        router.push("/bo/login");
         setLoading(false);
         return;
       }

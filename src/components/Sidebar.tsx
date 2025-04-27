@@ -6,6 +6,7 @@ import {
   CreditCardIcon,
   ListChecksIcon,
   UserIcon,
+  Users2Icon,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -33,6 +34,10 @@ export const getIcon = (icon: string) => {
       return <ClipboardCheck className={`w-6 h-6 text-white`} />;
     case "fee":
       return <CreditCardIcon className={`w-6 h-6 text-white`} />;
+    case "admin":
+      return <UserIcon className={`w-6 h-6 text-white`} />;
+    case "partner":
+      return <Users2Icon className={`w-6 h-6 text-white`} />;
     default:
       return <></>;
   }
@@ -52,7 +57,7 @@ export default function Sidebar({ navigations, isWide }: Props) {
           height={isWide ? 25 : 50}
         /> */}
         <h2 className={isWide ? "text-2xl text-white" : "text-xs text-white"}>
-          Admin Valet Services
+          {pathname?.includes("/bo/main") ? "Backoffice" : "Admin"} Valet Services
         </h2>
       </div>
       <div className="py-5 px-4 mt-5 w-full border-t-2 border-t-white">

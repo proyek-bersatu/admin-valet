@@ -57,3 +57,5 @@ export const queryToUrlSearchParams = (query: ParsedUrlQuery): URLSearchParams =
 
     return params;
 }
+
+export const dateToEpoch = (date: any) => new Date(date).getTime();

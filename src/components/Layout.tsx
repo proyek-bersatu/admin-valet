@@ -17,7 +17,7 @@ export default function Layout({ children }: Props) {
   return (
     <div>
       <Head>
-        <title>Camventory</title>
+        <title>Valet Area</title>
       </Head>
       <div className="flex flex-row h-screen overflow-hidden">
         <div
@@ -27,7 +27,7 @@ export default function Layout({ children }: Props) {
         >
           <Sidebar
             navigations={
-              pathname?.includes("/office") ? OFFICE_NAVIGATIONS : NAVIGATIONS
+              pathname?.includes("/bo/main") ? OFFICE_NAVIGATIONS : NAVIGATIONS
             }
             isWide={isWide}
           />

@@ -30,7 +30,7 @@ export default function Login() {
           timer: 1500,
         });
       }
-      const result = await axios.post("/api/login", payload);
+      const result = await axios.post("/api/bo_login", payload);
       Swal.fire({
         icon: "success",
         title: "Login Berhasil",
@@ -42,7 +42,7 @@ export default function Login() {
       useAuthStore
         .getState()
         .login(result?.data?.payload?.token, result.data?.payload?.user);
-      router.push("/main/dashboard");
+      router.push("/bo/main/dashboard");
       setLoading(false);
     } catch (error) {
       console.log(error);
@@ -59,9 +59,11 @@ export default function Login() {
   return (
     <div className="flex flex-col h-[100vh] justify-center items-center">
       <Head>
-        <title>Admin Valet Area</title>
+        <title>Backoffice</title>
       </Head>
-      <h1 className="font-bold text-2xl text-center">Admin Valet Services</h1>
+      <h1 className="font-bold text-2xl text-center">
+        Backoffice Valet Services
+      </h1>
       <div className="mt-2 bg-white w-[400px] p-4 shadow rounded">
         <form onSubmit={onSubmit}>
           <Input
