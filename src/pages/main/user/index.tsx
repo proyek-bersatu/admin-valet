@@ -42,10 +42,10 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     }
 
     const table = await axios.get(
-      `${CONFIG.base_url_api}/v1/customers?${params.toString()}`,
+      `${CONFIG.base_url_api}/partner/user?${params.toString()}`,
       {
         headers: {
-          Authorization: `${token}`,
+          Authorization: `Bearer ${token}`,
         },
       }
     );
@@ -87,9 +87,9 @@ export default function UserPage({ table }: any) {
       setShow(true);
     }
   }, []);
-  const data = [...table].map((item, index) => ({
+  const data = [...table?.data]?.map((item, index) => ({
     ...item,
-    ktp: (
+    photo: (
       <div className="flex gap-2 items-center">
         <Image src={item.full_path_ktp} alt="ktp" width={50} height={50} />
         <Link

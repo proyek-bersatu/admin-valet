@@ -28,7 +28,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                 }
             }
 
-            const result = await axios.post(CONFIG.base_url_api + '/bo/auth/login', {
+            const result = await axios.post(CONFIG.base_url_api + '/partner/auth/login', {
                 email, password
             }, {
                 headers: {
@@ -38,7 +38,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
             const token = result.data?.data?.token;
 
-            const user = await axios.get(CONFIG.base_url_api + "/bo/profile", {
+            const user = await axios.get(CONFIG.base_url_api + "/partner/profile", {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },

@@ -42,10 +42,10 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     }
 
     const table = await axios.get(
-      `${CONFIG.base_url_api}/v1/customers?${params.toString()}`,
+      `${CONFIG.base_url_api}/partner/areas?${params.toString()}`,
       {
         headers: {
-          Authorization: `${token}`,
+          Authorization: `Bearer ${token}`,
         },
       }
     );

@@ -32,7 +32,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                 }
             }
 
-            const result = await axios.post(CONFIG.base_url_api + `/v1/bo/partner`, {
+            const result = await axios.post(CONFIG.base_url_api + `/bo/partner`, {
                 email, name, phone, address, startDateSubscription: dateToEpoch(startDateSubscription), endDateSubscription: dateToEpoch(endDateSubscription)
             }, {
                 headers: {
@@ -61,7 +61,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                 }
             }
 
-            const result = await axios.put(CONFIG.base_url_api + '/v1/bo/partner' + `/${id}`, {
+            const result = await axios.put(CONFIG.base_url_api + '/bo/partner' + `/${id}`, {
                 email, name, phone, address, startDateSubscription: dateToEpoch(startDateSubscription), endDateSubscription: dateToEpoch(endDateSubscription), code, status
             }, {
                 headers: {
@@ -82,7 +82,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
         if (req.method === 'DELETE') {
 
-            await axios.delete(CONFIG.base_url_api + '/v1/bo/partner' + `/${id}`, {
+            await axios.delete(CONFIG.base_url_api + '/bo/partner' + `/${id}`, {
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${req.cookies.token}`

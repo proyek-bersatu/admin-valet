@@ -32,7 +32,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                 }
             }
 
-            const result = await axios.post(CONFIG.base_url_api + '/v1/partner/user', {
+            const result = await axios.post(CONFIG.base_url_api + '/partner/user', {
                 email, name, phone, username, status, area_id, password
             }, {
                 headers: {
@@ -61,7 +61,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                 }
             }
 
-            const result = await axios.patch(CONFIG.base_url_api + '/v1/partner/user' + `/${id}`, {
+            const result = await axios.patch(CONFIG.base_url_api + '/partner/user' + `/${id}`, {
                 email, name, phone, username, status, area_id
             }, {
                 headers: {
@@ -82,7 +82,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
         if (req.method === 'DELETE') {
 
-            await axios.delete(CONFIG.base_url_api + '/v1/partner/user' + `/${id}`, {
+            await axios.delete(CONFIG.base_url_api + '/partner/user' + `/${id}`, {
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${req.cookies.token}`
