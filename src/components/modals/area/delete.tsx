@@ -25,7 +25,7 @@ export default function AreaDeleteModal({ open, setOpen, data }: Props) {
       const payload = {
         ...formData,
       };
-      await axios.delete("/api/office/administrator", { data: payload });
+      await axios.delete("/api/area", { data: payload });
       Swal.fire({
         icon: "success",
         title: "Area Deleted Successfully",

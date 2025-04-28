@@ -13,7 +13,7 @@ export const ColumnArea = [
     },
     {
         name: "Status",
-        selector: (row: IArea) => row.status,
+        selector: (row: IArea) => row.status == "ACTIVE" ? "Aktif" : "Non Aktif",
         sortable: true
     },
     {

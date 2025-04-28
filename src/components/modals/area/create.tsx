@@ -27,7 +27,7 @@ export default function AreaCreateModal({ open, setOpen }: Props) {
       const payload = {
         ...formData,
       };
-      await axios.post("/api/office/administrator", payload);
+      await axios.post("/api/area", payload);
       Swal.fire({
         icon: "success",
         title: "Area Created Successfully",
@@ -80,16 +80,6 @@ export default function AreaCreateModal({ open, setOpen }: Props) {
             required={true}
             placeholder="Masukkan Longitude"
             name="long"
-          />
-          <Select
-            options={[
-              { value: "ACTIVE", label: "Aktif" },
-              { value: "INACTIVE", label: "Non Aktif" },
-            ]}
-            label="Status"
-            required={true}
-            placeholder="Pilih Status"
-            name="status"
           />
           <div className="w-full flex justify-end gap-2 border-t-2 border-t-gray-200 pt-4 mt-2">
             <Button

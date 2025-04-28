@@ -28,7 +28,7 @@ export default function AreaUpdateModal({ open, setOpen, data }: Props) {
       const payload = {
         ...formData,
       };
-      await axios.patch("/api/office/administrator", payload);
+      await axios.patch("/api/area", payload);
       Swal.fire({
         icon: "success",
         title: "Area Updated Successfully",

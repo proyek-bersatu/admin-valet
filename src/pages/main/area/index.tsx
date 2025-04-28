@@ -87,13 +87,14 @@ export default function UserPage({ table }: any) {
       setShow(true);
     }
   }, []);
-  const data = [...table].map((item, index) => ({
+  const data = [...table?.data].map((item, index) => ({
     ...item,
     location:
       item?.lat && item?.long ? (
         <Link
           href={`https://www.google.com/maps/search/?api=1&query=${item?.lat},${item?.long}`}
           target="_blank"
+          className="text-blue-500"
         >
           Lihat Lokasi
         </Link>
