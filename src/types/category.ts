@@ -5,6 +5,7 @@ export interface ICategory {
     name:      string;
     price:     number;
     days:      number[];
+    type:      "BIKE" | "CAR";
     createdAt: number;
     updatedAt: number;
 }

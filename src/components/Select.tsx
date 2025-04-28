@@ -57,10 +57,14 @@ const Select: React.FC<SelectComponentProps> = ({
         isDisabled={isDisabled}
         className="w-full text-xs"
         classNamePrefix="custom-select"
+        maxMenuHeight={150}
         name={name}
         defaultValue={
           defaultValue &&
+          isMulti ?
+          options.filter((option) => defaultValue.includes(option.value)) :
           options.find((option) => option.value === defaultValue)
+          
         }
       />
     </div>

@@ -1,11 +1,17 @@
 import Button from "@/components/Button";
 import Input from "@/components/Input";
 import { useModal } from "@/components/Modal";
+import CategoryCreateModal from "@/components/modals/category/create";
+import CategoryDeleteModal from "@/components/modals/category/delete";
+import CategoryUpdateModal from "@/components/modals/category/update";
 import UserCreateModal from "@/components/modals/user/create";
 import UserDeleteModal from "@/components/modals/user/delete";
 import UserUpdateModal from "@/components/modals/user/update";
+import Select from "@/components/Select";
 import { CONFIG } from "@/config";
+import { ColumnCategory } from "@/constants/column_category";
 import { ColumnUser } from "@/constants/column_user";
+import { IArea } from "@/types/area";
 import axios from "axios";
 import { parse } from "cookie";
 import { PencilLineIcon, TrashIcon } from "lucide-react";
@@ -30,11 +36,12 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     //     },
     //   };
     // }
-    const { page = 1, limit = 10, search = "" } = query;
+    const { page = 1, limit = 10, search = "", areaid } = query;
 
     const params = new URLSearchParams({
       page: String(page),
       limit: String(limit),
+      areaid: String(areaid),
     });
 
     if (typeof search === "string" && search.trim() !== "") {
@@ -42,10 +49,19 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     }
 
     const table = await axios.get(
-      `${CONFIG.base_url_api}/v1/customers?${params.toString()}`,
+      `${CONFIG.base_url_api}/partner/category?${params.toString()}`,
       {
         headers: {
-          Authorization: `${token}`,
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    const areas = await axios.get(
+      `${CONFIG.base_url_api}/partner/areas?${params.toString()}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
       }
     );
@@ -60,7 +76,12 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     }
 
     // Optionally validate token...
-    return { props: { table: table?.data?.data || [] } };
+    return {
+      props: {
+        table: table?.data?.data || [],
+        areas: areas?.data?.data || [],
+      },
+    };
   } catch (error: any) {
     console.log(error);
     if (error?.response?.status === 401) {
@@ -77,7 +98,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   }
 };
 
-export default function UserPage({ table }: any) {
+export default function UserPage({ table, areas }: any) {
   const [show, setShow] = useState<boolean>(false);
   const [modal, setModal] = useState<useModal>();
   const router = useRouter();
@@ -87,7 +108,7 @@ export default function UserPage({ table }: any) {
       setShow(true);
     }
   }, []);
-  const data = [...table].map((item, index) => ({
+  const data = [...table?.data].map((item, index) => ({
     ...item,
     action: (
       <div key={index} className="flex gap-2">
@@ -133,60 +154,82 @@ export default function UserPage({ table }: any) {
         <h1 className="text-2xl font-bold">Kategori</h1>
       </div>
       <div className="flex lg:flex-row flex-col gap-2 items-center justify-between mt-4">
-        <Input
-          placeholder="Cari Kategori"
-          type="search"
-          onChange={(e) => setFilter({ search: e.target.value })}
-        />
+        <div className="flex gap-2 lg:flex-row flex-col items-end w-full">
+          <Input
+            placeholder="Cari Kategori"
+            type="search"
+            onChange={(e) => setFilter({ search: e.target.value })}
+            className="lg:w-auto w-full"
+          />
+          <Select
+            options={areas?.data?.map((item: IArea) => ({
+              value: item.id,
+              label: item.name,
+            }))}
+            defaultValue={filter?.areaid}
+            placeholder="Pilih Lokasi"
+            onChange={(e: any) => setFilter({ areaid: e?.value || "" })}
+          />
+        </div>
         <Button
           variant="custom-color"
-          className="bg-orange-500 text-white"
+          className={`bg-orange-500 text-white w-1/5 ${
+            filter?.areaid ? "" : "hidden"
+          }`}
           type="button"
           onClick={() => setModal({ open: true, key: "create" })}
+          disabled={!filter?.areaid}
         >
           + Tambah Kategori
         </Button>
       </div>
-      <div className="w-full overflow-x-auto">
-        {show && (
-          <div className="mt-4">
-            <DataTable
-              columns={ColumnUser}
-              data={data}
-              pagination
-              highlightOnHover
-              responsive
-              customStyles={{
-                headCells: {
-                  style: {
-                    backgroundColor: "#f3f4f6",
-                    fontWeight: "bold",
-                  },
-                },
-                rows: {
-                  style: {
-                    "&:hover": {
-                      backgroundColor: "#e5e7eb",
+      {filter?.areaid ? (
+        <div className="w-full overflow-x-auto">
+          {show && (
+            <div className="mt-4">
+              <DataTable
+                columns={ColumnCategory}
+                data={data}
+                pagination
+                highlightOnHover
+                responsive
+                customStyles={{
+                  headCells: {
+                    style: {
+                      backgroundColor: "#f3f4f6",
+                      fontWeight: "bold",
                     },
                   },
-                },
-              }}
-            />
-          </div>
-        )}
-      </div>
+                  rows: {
+                    style: {
+                      "&:hover": {
+                        backgroundColor: "#e5e7eb",
+                      },
+                    },
+                  },
+                }}
+              />
+            </div>
+          )}
+        </div>
+      ) : (
+        <div className="bg-blue-100 rounded p-2 mt-4">
+          <p>Harap pilih lokasi terlebih dahulu</p>
+        </div>
+      )}
+
       {modal?.key == "create" && (
-        <UserCreateModal open={modal?.open} setOpen={setModal} />
+        <CategoryCreateModal open={modal?.open} setOpen={setModal} />
       )}
       {modal?.key == "update" && (
-        <UserUpdateModal
+        <CategoryUpdateModal
           open={modal?.open}
           setOpen={setModal}
           data={modal?.data}
         />
       )}
       {modal?.key == "delete" && (
-        <UserDeleteModal
+        <CategoryDeleteModal
           open={modal?.open}
           setOpen={setModal}
           data={modal?.data}

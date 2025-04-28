@@ -5,26 +5,23 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 type Data = {
     message: string;
     payload?: {
-        email: string;
+        days: string;
         name: string;
-        phone: string;
-        username?: string;
+        price: number;
         id?: string;
-        area_id?: number;
-        password?: string;
-        status: string;
+        type: string;
+        areaId?: string;
         data?: string;
     }
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
     try {
-        const { email, name, phone, username, status, password, area_id, id } = req.body
-        const requiredBody = ["email", "name", "phone", "username", "status", "area_id"];
+        const { name, price, days, areaId, type, id } = req.body
+        const requiredBody = ["name", "price", "days", "areaId", "type"];
 
         if (req.method === 'POST') {
 
-            // Simulate user creation (normally, you’d interact with DB here)
             for (let index = 0; index < requiredBody.length; index++) {
                 const element = requiredBody[index];
                 if (!element) {
@@ -32,8 +29,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                 }
             }
 
-            const result = await axios.post(CONFIG.base_url_api + '/partner/user', {
-                email, name, phone, username, status, area_id, password
+            const result = await axios.post(CONFIG.base_url_api + '/partner/category', {
+                name, price, days, areaId, type
             }, {
                 headers: {
                     'Content-Type': 'application/json',
@@ -46,14 +43,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
             }
 
             return res.status(201).json({
-                message: 'User created successfully',
-                payload: { email, name, phone, username, status, id, area_id },
+                message: 'Category created successfully',
+                payload: { name, days, price, type, areaId },
             })
         }
 
         if (req.method === 'PATCH') {
 
-            // Simulate user creation (normally, you’d interact with DB here)
             for (let index = 0; index < requiredBody.length; index++) {
                 const element = requiredBody[index];
                 if (!element) {
@@ -61,8 +57,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                 }
             }
 
-            const result = await axios.put(CONFIG.base_url_api + '/partner/user' + `/${id}`, {
-                email, name, phone, username, status, area_id
+            const result = await axios.put(CONFIG.base_url_api + '/partner/category' + `/${id}`, {
+                name, price, days, areaId, type, id
             }, {
                 headers: {
                     'Content-Type': 'application/json',
@@ -75,14 +71,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
             }
 
             return res.status(201).json({
-                message: 'User updated successfully',
-                payload: { email, name, phone, username, status, id, area_id },
+                message: 'Category updated successfully',
+                payload: { name, price, days, areaId, type, id },
             })
         }
 
         if (req.method === 'DELETE') {
 
-            await axios.delete(CONFIG.base_url_api + '/partner/user' + `/${id}`, {
+            await axios.delete(CONFIG.base_url_api + '/partner/category' + `/${id}`, {
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${req.cookies.token}`
@@ -90,7 +86,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
             });
 
             return res.status(201).json({
-                message: 'User deleted successfully',
+                message: 'Category deleted successfully',
             })
         }
 

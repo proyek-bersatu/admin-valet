@@ -65,11 +65,11 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         ) : props.type == "search" ? (
           <>
             <div
-              className={`border flex flex-row justify-between items-center rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 ${className} ${
+              className={`border flex flex-row justify-between items-center rounded-md px-2 py-2 focus:ring-2 focus:ring-blue-500 ${className} ${
                 error ? "border-red-500" : "border-gray-300"
               }`}
             >
-              <SearchIcon className="w-6 h-6" />
+              <SearchIcon className="w-5 h-5" />
               <input
                 ref={ref}
                 required={required}
