@@ -25,7 +25,7 @@ export default function UserDeleteModal({ open, setOpen, data }: Props) {
       const payload = {
         ...formData,
       };
-      await axios.delete("/api/office/administrator", { data: payload });
+      await axios.delete("/api/user", { data: payload });
       Swal.fire({
         icon: "success",
         title: "User Deleted Successfully",
@@ -42,7 +42,7 @@ export default function UserDeleteModal({ open, setOpen, data }: Props) {
         title: error?.response?.data?.message?.message || "Error deleting user",
       });
       if (error?.response?.data?.message?.code === 401) {
-        router.push("/office/login");
+        router.push("/");
         setLoading(false);
         return;
       }

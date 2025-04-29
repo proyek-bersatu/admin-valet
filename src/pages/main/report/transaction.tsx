@@ -1,11 +1,12 @@
 import Button from "@/components/Button";
 import Input from "@/components/Input";
 import { useModal } from "@/components/Modal";
-import UserCreateModal from "@/components/modals/user/create";
-import UserDeleteModal from "@/components/modals/user/delete";
-import UserUpdateModal from "@/components/modals/user/update";
+import AreaCreateModal from "@/components/modals/area/create";
+import AreaDeleteModal from "@/components/modals/area/delete";
+import AreaUpdateModal from "@/components/modals/area/update";
 import { CONFIG } from "@/config";
-import { ColumnUser } from "@/constants/column_user";
+import { ColumnArea } from "@/constants/column_area";
+import { ColumnTransaction } from "@/constants/column_transaction";
 import axios from "axios";
 import { parse } from "cookie";
 import { PencilLineIcon, TrashIcon } from "lucide-react";
@@ -42,16 +43,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     }
 
     const table = await axios.get(
-      `${CONFIG.base_url_api}/partner/user?${params.toString()}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-
-    const areas = await axios.get(
-      `${CONFIG.base_url_api}/partner/areas?${params.toString()}`,
+      `${CONFIG.base_url_api}/partner/transaction?${params.toString()}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -69,12 +61,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     }
 
     // Optionally validate token...
-    return {
-      props: {
-        table: table?.data?.data || [],
-        areas: areas?.data?.data || [],
-      },
-    };
+    return { props: { table: table?.data?.data || [] } };
   } catch (error: any) {
     console.log(error);
     if (error?.response?.status === 401) {
@@ -91,7 +78,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   }
 };
 
-export default function UserPage({ table, areas }: any) {
+export default function UserPage({ table }: any) {
   const [show, setShow] = useState<boolean>(false);
   const [modal, setModal] = useState<useModal>();
   const router = useRouter();
@@ -101,16 +88,8 @@ export default function UserPage({ table, areas }: any) {
       setShow(true);
     }
   }, []);
-  const data = [...table?.data]?.map((item, index) => ({
+  const data = [...table?.data].map((item, index) => ({
     ...item,
-    // photo: (
-    //   <div className="flex gap-2 items-center">
-    //     <Image src={item.photo} alt="ktp" width={50} height={50} />
-    //     <Link className="text-blue-500" href={item.photo} target="_blank">
-    //       View
-    //     </Link>
-    //   </div>
-    // ),
     action: (
       <div key={index} className="flex gap-2">
         <Button
@@ -152,28 +131,20 @@ export default function UserPage({ table, areas }: any) {
   return (
     <div>
       <div className="flex lg:flex-row flex-col gap-2 items-center justify-between">
-        <h1 className="text-2xl font-bold">Pengguna</h1>
+        <h1 className="text-2xl font-bold">Laporan Transaksi</h1>
       </div>
       <div className="flex lg:flex-row flex-col gap-2 items-center justify-between mt-4">
         <Input
-          placeholder="Cari Lokasi"
+          placeholder="Cari Transaksi"
           type="search"
           onChange={(e) => setFilter({ search: e.target.value })}
         />
-        <Button
-          variant="custom-color"
-          className="bg-orange-500 text-white"
-          type="button"
-          onClick={() => setModal({ open: true, key: "create" })}
-        >
-          + Tambah Pengguna
-        </Button>
       </div>
       <div className="w-full overflow-x-auto">
         {show && (
           <div className="mt-4">
             <DataTable
-              columns={ColumnUser}
+              columns={ColumnTransaction}
               data={data}
               pagination
               highlightOnHover
@@ -198,22 +169,17 @@ export default function UserPage({ table, areas }: any) {
         )}
       </div>
       {modal?.key == "create" && (
-        <UserCreateModal
-          open={modal?.open}
-          setOpen={setModal}
-          areas={areas?.data}
-        />
+        <AreaCreateModal open={modal?.open} setOpen={setModal} />
       )}
       {modal?.key == "update" && (
-        <UserUpdateModal
+        <AreaUpdateModal
           open={modal?.open}
           setOpen={setModal}
           data={modal?.data}
-          areas={areas?.data}
         />
       )}
       {modal?.key == "delete" && (
-        <UserDeleteModal
+        <AreaDeleteModal
           open={modal?.open}
           setOpen={setModal}
           data={modal?.data}

@@ -10,17 +10,18 @@ type Data = {
         phone: string;
         username?: string;
         id?: string;
-        area_id?: number;
+        areaId?: number;
         password?: string;
         status: string;
+        role?: string;
         data?: string;
     }
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
     try {
-        const { email, name, phone, username, status, password, area_id, id } = req.body
-        const requiredBody = ["email", "name", "phone", "username", "status", "area_id"];
+        const { email, name, phone, username, status, password, areaId, id, role } = req.body
+        const requiredBody = ["email", "name", "phone", "username", "status", "areaId", "role"];
 
         if (req.method === 'POST') {
 
@@ -33,7 +34,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
             }
 
             const result = await axios.post(CONFIG.base_url_api + '/partner/user', {
-                email, name, phone, username, status, area_id, password
+                email, name, phone, username, status, areaId, password, role
             }, {
                 headers: {
                     'Content-Type': 'application/json',
@@ -47,7 +48,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
             return res.status(201).json({
                 message: 'User created successfully',
-                payload: { email, name, phone, username, status, id, area_id },
+                payload: { email, name, phone, username, status, id, areaId, role },
             })
         }
 
@@ -62,7 +63,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
             }
 
             const result = await axios.put(CONFIG.base_url_api + '/partner/user' + `/${id}`, {
-                email, name, phone, username, status, area_id
+                email, name, phone, username, status, areaId, role
             }, {
                 headers: {
                     'Content-Type': 'application/json',
@@ -76,7 +77,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
             return res.status(201).json({
                 message: 'User updated successfully',
-                payload: { email, name, phone, username, status, id, area_id },
+                payload: { email, name, phone, username, status, id, areaId, role },
             })
         }
 

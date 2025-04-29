@@ -5,6 +5,7 @@ export interface IUser {
     phone:     string;
     email:     string;
     role:      string;
+    areaId:    string;
     createdAt: number;
     updatedAt: number;
 }

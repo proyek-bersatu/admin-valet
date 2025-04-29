@@ -1,24 +1,31 @@
 // import { IUsers } from "@/types/user";
 
+import { IUser } from "@/types/user";
+
 export const ColumnUser = [
     {
-        name: "Name",
-        selector: (row: any) => row.name,
+        name: "Nama",
+        selector: (row: IUser) => row.name,
+        sortable: true
+    },
+    {
+        name: "Username",
+        selector: (row: IUser) => row.username,
         sortable: true
     },
     {
         name: "Email",
-        selector: (row: any) => row.email,
+        selector: (row: IUser) => row.email,
         sortable: true
     },
     {
         name: "Phone Number",
-        selector: (row: any) => row.phone,
+        selector: (row: IUser) => row.phone,
         sortable: true
     },
     {
         name: "Role",
-        selector: (row: any) => row.role,
+        selector: (row: IUser) => row.role,
         sortable: true
     },
     {

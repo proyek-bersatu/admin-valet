@@ -84,7 +84,9 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           <>
             <input
               ref={ref}
-              className={`border text-xs rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ${className} ${
+              className={`border ${
+                props.type == "platNo" ? "text-4xl px-6 py-4 uppercase" : "text-xs px-3 py-2"
+              } rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${className} ${
                 error ? "border-red-500" : "border-gray-300"
               }`}
               required={required}

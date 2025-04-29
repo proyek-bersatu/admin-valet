@@ -2,6 +2,7 @@ import Button from "@/components/Button";
 import Input from "@/components/Input";
 import Modal from "@/components/Modal";
 import Select from "@/components/Select";
+import { IArea } from "@/types/area";
 import { queryToUrlSearchParams } from "@/utils";
 import axios from "axios";
 import { XIcon } from "lucide-react";
@@ -12,11 +13,16 @@ import Swal from "sweetalert2";
 interface Props {
   open: boolean;
   setOpen: any;
+  areas: IArea[];
 }
 
-export default function UserCreateModal({ open, setOpen }: Props) {
+export default function UserCreateModal({ open, setOpen, areas }: Props) {
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
+  const AREAS = areas.map((area) => ({
+    label: area.name,
+    value: area.id,
+  }));
   const params = queryToUrlSearchParams(router?.query)?.toString();
 
   const onSubmit = async (e: any) => {
@@ -97,20 +103,16 @@ export default function UserCreateModal({ open, setOpen }: Props) {
             type="number"
           />
           <Select
-            options={[
-              { value: "1", label: "All" },
-              { value: "2", label: "Cipadung" },
-              { value: "3", label: "Dipatiukur" },
-            ]}
+            options={AREAS}
             label="Lokasi"
             required={true}
             placeholder="Pilih Lokasi"
-            name="area_id"
+            name="areaId"
           />
           <Select
             options={[
-              { value: "Finance", label: "Admin Keuangan" },
-              { value: "Cashier", label: "Kasir" },
+              { value: "FINANCE", label: "Admin Keuangan" },
+              { value: "CASHIER", label: "Kasir" },
             ]}
             label="Peran"
             required={true}

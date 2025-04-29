@@ -2,6 +2,7 @@ import Button from "@/components/Button";
 import Input from "@/components/Input";
 import Modal from "@/components/Modal";
 import Select from "@/components/Select";
+import { IArea } from "@/types/area";
 import { queryToUrlSearchParams } from "@/utils";
 import axios from "axios";
 import { XIcon } from "lucide-react";
@@ -13,11 +14,16 @@ interface Props {
   open: boolean;
   setOpen: any;
   data: any;
+  areas: IArea[];
 }
 
-export default function UserUpdateModal({ open, setOpen, data }: Props) {
+export default function UserUpdateModal({ open, setOpen, data, areas }: Props) {
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
+  const AREAS = areas.map((area) => ({
+    label: area.name,
+    value: area.id,
+  }));
   const params = queryToUrlSearchParams(router?.query)?.toString();
 
   const onSubmit = async (e: any) => {
@@ -28,7 +34,7 @@ export default function UserUpdateModal({ open, setOpen, data }: Props) {
       const payload = {
         ...formData,
       };
-      await axios.patch("/api/office/administrator", payload);
+      await axios.patch("/api/user", payload);
       Swal.fire({
         icon: "success",
         title: "User Updated Successfully",
@@ -45,7 +51,7 @@ export default function UserUpdateModal({ open, setOpen, data }: Props) {
         title: error?.response?.data?.message?.message || "Error updating user",
       });
       if (error?.response?.data?.message?.code === 401) {
-        router.push("/office/login");
+        router.push("/");
         setLoading(false);
         return;
       }
@@ -66,9 +72,9 @@ export default function UserUpdateModal({ open, setOpen, data }: Props) {
         <form className="mt-4 flex flex-col gap-2" onSubmit={onSubmit}>
           <input type="hidden" name="id" value={data.id} />
           <Input
-            label="Name"
+            label="NAma"
             required={true}
-            placeholder="Enter Name"
+            placeholder="Enter NAma"
             name="name"
             defaultValue={data.name}
           />
@@ -87,34 +93,29 @@ export default function UserUpdateModal({ open, setOpen, data }: Props) {
             type="password"
           />
           <Input
-            label="Phone Number"
+            label="No Telepon"
             required={true}
-            placeholder="Enter Phone Number"
+            placeholder="Enter No Telepon"
             name="phone"
             type="number"
             defaultValue={data.phone}
           />
           <Select
-            options={[
-              { value: "all", label: "All" },
-              { value: "cipadung", label: "Cipadung" },
-              { value: "dipatiukur", label: "Dipatiukur" },
-            ]}
-            label="Placement"
+            options={AREAS}
+            label="Lokasi"
             required={true}
-            placeholder="Choose Placement"
-            name="location"
-            defaultValue={data.location}
+            placeholder="Pilih Lokasi"
+            name="areaId"
+            defaultValue={data.areaId}
           />
           <Select
             options={[
-              { value: "ADMIN", label: "Admin" },
-              { value: "STAFF", label: "Staff" },
-              { value: "HEAD_STAFF", label: "Head Staff" },
+              { value: "FINANCE", label: "Admin Keuangan" },
+              { value: "CASHIER", label: "Kasir" },
             ]}
-            label="Role"
+            label="Peran"
             required={true}
-            placeholder="Choose Role"
+            placeholder="Pilih Peran"
             name="role"
             defaultValue={data.role}
           />
@@ -122,20 +123,12 @@ export default function UserUpdateModal({ open, setOpen, data }: Props) {
             options={[
               { value: "ACTIVE", label: "Active" },
               { value: "INACTIVE", label: "Inactive" },
-              { value: "SUSPEND", label: "Suspend" },
             ]}
             label="Status"
             required={true}
-            placeholder="Choose Status"
+            placeholder="Pilih Status"
             name="status"
             defaultValue={data.status}
-          />
-          <Input
-            label="Address"
-            required={true}
-            placeholder="Enter Address"
-            name="address"
-            defaultValue={data.address}
           />
           <div className="w-full flex justify-end gap-2 border-t-2 border-t-gray-200 pt-4 mt-2">
             <Button
